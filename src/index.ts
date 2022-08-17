@@ -2,6 +2,7 @@ import * as model from './model';
 import * as structure from './structure';
 import * as suiteTemplate from './suite-template';
 import * as fileutils from './file-utils';
+export * from './functional';
 
 const steps: model.Step[] = [];
 const reports: model.Report[] = [];
@@ -11,6 +12,11 @@ const outputDestination = './reports/bddly';
 
 let testFailed: boolean;
 let appName: string = 'Bddly reports';
+
+export function registerStep(stepType: string, stepFunc: Function) {
+  const stepDescription = stepFunc.name.replace(/([a-zA-Z])(?=[A-Z])/g, '$1 ').toLowerCase();
+  steps.push({ stepType, description: stepDescription, param: '' });
+}
 
 export const Step = (target: any, methodName: string, descriptor: PropertyDescriptor) => {
   const stepType = target.constructor.name;
